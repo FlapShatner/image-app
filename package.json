@@ -11,6 +11,7 @@
   "dependencies": {
     "@uploadthing/react": "^7.1.5",
     "clsx": "^2.1.1",
+    "imagetracerjs": "^1.2.6",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "next": "15.1.5",
