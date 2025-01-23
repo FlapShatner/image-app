@@ -2,8 +2,13 @@ import { cn } from '@/utils/cn';
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload } from 'react-feather';
+import { UserImageData } from './frame';
 
-function ImageUpload({ setImage }: { setImage: (image: string) => void }) {
+function ImageUpload({
+  setImageData,
+}: {
+  setImageData: (imageData: UserImageData) => void;
+}) {
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       try {
@@ -13,7 +18,7 @@ function ImageUpload({ setImage }: { setImage: (image: string) => void }) {
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch('/api/convert', {
+        const response = await fetch('http://localhost:8000/clip', {
           method: 'POST',
           body: formData,
         });
@@ -22,21 +27,26 @@ function ImageUpload({ setImage }: { setImage: (image: string) => void }) {
           throw new Error('Failed to convert image');
         }
 
-        const blob = await response.blob();
-        const imageUrl = URL.createObjectURL(blob);
-        setImage(imageUrl);
+        const data = await response.json();
+        console.log(data);
+        setImageData({
+          image: data.png,
+          pathTag: data.pathTag,
+          originalWidth: data.width,
+          originalHeight: data.height,
+        });
       } catch (error) {
         console.error('Error processing image:', error);
       }
     },
-    [setImage]
+    [setImageData]
   );
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
     useDropzone({
       onDrop,
       accept: {
-        'image/*': ['jpeg', 'jpg', 'png', 'webp', 'svg', 'tiff', 'tif'],
+        'image/*': [],
       },
       maxFiles: 1,
       maxSize: 5 * 1024 * 1024, // 5MB
