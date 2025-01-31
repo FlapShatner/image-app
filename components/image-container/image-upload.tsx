@@ -1,40 +1,45 @@
 import { cn } from '@/utils/cn';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload } from 'react-feather';
 import { UserImageData } from './frame';
+import { convertToPng } from '@/server/image-actions';
 
 function ImageUpload({
   setImageData,
+
 }: {
   setImageData: (imageData: UserImageData) => void;
 }) {
+
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       try {
         const file = acceptedFiles[0];
-        if (!file) return;
 
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch('http://localhost:8000/clip', {
+        // const imageData = await convertToPng(formData);
+        // if (!imageData) { throw new Error('Failed to convert image'); }
+
+        const response = await fetch('http://localhost:8000/images', {
           method: 'POST',
           body: formData,
         });
-
         if (!response.ok) {
           throw new Error('Failed to convert image');
         }
+        const imageData = await response.json();
 
-        const data = await response.json();
-        console.log(data);
         setImageData({
-          image: data.png,
-          pathTag: data.pathTag,
-          originalWidth: data.width,
-          originalHeight: data.height,
+          image: `data:image/png;base64,${imageData.image}`,
+          imageBase64: imageData.image,
+          pathTag: '',
+          originalWidth: imageData.width ?? 0,
+          originalHeight: imageData.height ?? 0,
         });
+
       } catch (error) {
         console.error('Error processing image:', error);
       }
@@ -56,7 +61,6 @@ function ImageUpload({
     <div
       className={cn(
         'group flex flex-col items-center justify-center border-2 border-neutral-500 rounded-lg border-dashed p-4 hover:bg-neutral-700 hover:border-neutral-300 transition-all duration-300 hover:scale-[102%] cursor-pointer hover:shadow-lg',
-
         isDragAccept
           ? 'bg-neutral-700 shadow-lg scale-[102%] border-neutral-300'
           : '',

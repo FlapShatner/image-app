@@ -3,9 +3,11 @@ import { useState } from 'react';
 import ImageUpload from './image-upload';
 import UploadedImage from './uploaded-image';
 import ClearImage from './clear-image';
+import { UploadData } from '@/lib/uploadthing';
 
 export type UserImageData = {
   image: string;
+  imageBase64: string;
   pathTag: string;
   originalWidth: number;
   originalHeight: number;
@@ -13,6 +15,7 @@ export type UserImageData = {
 
 export default function Frame() {
   const [imageData, setImageData] = useState<UserImageData | null>(null);
+  const [displayedImage, setDisplayedImage] = useState<string | null>(null);
 
   return (
     <div className="w-full bg-neutral-800">

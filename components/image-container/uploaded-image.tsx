@@ -5,6 +5,7 @@ import SvgOverlay from './svg-overlay';
 import { UserImageData } from './frame';
 
 export default function UploadedImage({
+
   imageData,
 }: {
   imageData: UserImageData;
@@ -13,8 +14,10 @@ export default function UploadedImage({
   const { height: windowHeight } = useWindowSize();
   const imageHeight = windowHeight * 0.8;
 
+
+
   return (
-    <div className="relative flex flex-col items-center justify-center">
+    <div className="relative flex flex-col items-center justify-center my-auto">
       <Image
         ref={ref}
         unoptimized
