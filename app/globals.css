@@ -19,3 +19,20 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* From Uiverse.io by JaydipPrajapati1910 */ 
+.loader {
+  width: calc(160px / 0.707);
+  height: 38px;
+  background: repeating-linear-gradient(-45deg, #d4d4d4 0 30px,#0000 0 40px) left/200% 100%;
+  animation: i3 2s infinite linear;
+  border-radius: 10px;
+  border: 1px solid #d4d4d4;
+}
+
+@keyframes i3 {
+  100% {
+    background-position: right
+  }
+}
+  

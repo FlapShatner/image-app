@@ -3,45 +3,40 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload } from 'react-feather';
 import { UserImageData } from './frame';
-import { convertToPng } from '@/server/image-actions';
-
 function ImageUpload({
   setImageData,
-
+  setIsProcessing,
 }: {
   setImageData: (imageData: UserImageData) => void;
+  setIsProcessing: (isProcessing: boolean) => void;
 }) {
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       try {
+        setIsProcessing(true);
         const file = acceptedFiles[0];
-
         const formData = new FormData();
         formData.append('file', file);
-
-        // const imageData = await convertToPng(formData);
-        // if (!imageData) { throw new Error('Failed to convert image'); }
-
-        const response = await fetch('http://localhost:8000/images', {
+        const response = await fetch('http://localhost:8000/process-image/', {
           method: 'POST',
           body: formData,
         });
+
         if (!response.ok) {
-          throw new Error('Failed to convert image');
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const imageData = await response.json();
 
-        setImageData({
-          image: `data:image/png;base64,${imageData.image}`,
-          imageBase64: imageData.image,
-          pathTag: '',
-          originalWidth: imageData.width ?? 0,
-          originalHeight: imageData.height ?? 0,
-        });
+        // Get the blob from the response
+        const imageBlob = await response.blob();
+        // Create a URL for the blob
+        const imageUrl = URL.createObjectURL(imageBlob);
 
+        setImageData({ image: imageUrl });
       } catch (error) {
         console.error('Error processing image:', error);
+      } finally {
+        setIsProcessing(false);
       }
     },
     [setImageData]

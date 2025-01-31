@@ -9,15 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@image-tracer-ts/browser": "^1.0.3",
-    "@image-tracer-ts/nodejs": "^1.0.4",
+    "@tanstack/react-query": "^5.65.1",
     "@uploadthing/react": "^7.1.5",
     "clsx": "^2.1.1",
-    "imagetracerjs": "^1.2.6",
-    "lodash": "^4.17.21",
-    "lodash.debounce": "^4.0.8",
     "next": "15.1.5",
-    "potrace": "^2.1.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.5",
@@ -34,10 +29,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/lodash": "^4.17.14",
-    "@types/lodash.debounce": "^4.0.9",
+    "@tanstack/eslint-plugin-query": "^5.65.0",
     "@types/node": "^20",
-    "@types/potrace": "^2.1.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
