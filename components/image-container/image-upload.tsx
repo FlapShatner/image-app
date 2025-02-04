@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload } from 'react-feather';
 import { UserImageData } from './frame';

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ImageUpload from './image-upload';
 import UploadedImage from './uploaded-image';
 import ClearImage from './clear-image';
-import { UploadData } from '@/lib/uploadthing';
+// import { UploadData } from '@/lib/uploadthing';
 import Loader from '../loader';
 
 export type UserImageData = {
