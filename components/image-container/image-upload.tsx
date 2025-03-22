@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload } from 'react-feather';
 import { UserImageData } from './frame';
+import { useOptionsStore } from '../providers/options-store-provider';
 function ImageUpload({
   setImageData,
   setIsProcessing,
@@ -10,7 +11,7 @@ function ImageUpload({
   setImageData: (imageData: UserImageData) => void;
   setIsProcessing: (isProcessing: boolean) => void;
 }) {
-
+  const borderWidth = useOptionsStore((state) => state.borderWidth);
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       try {
@@ -18,10 +19,15 @@ function ImageUpload({
         const file = acceptedFiles[0];
         const formData = new FormData();
         formData.append('file', file);
-        const response = await fetch('http://localhost:8000/process-image/', {
-          method: 'POST',
-          body: formData,
-        });
+        const params = new URLSearchParams();
+        params.append('border_thickness', borderWidth.toString());
+        const response = await fetch(
+          `http://localhost:8000/process-image/?${params.toString()}`,
+          {
+            method: 'POST',
+            body: formData,
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
